@@ -8,19 +8,27 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Add EF Core DbContext using SQL Server connection string
+// Add services to the container
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// ✅ Register services for EF Core (UserService and BookService)
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BookService>();
 
-// ✅ Add controllers
 builder.Services.AddControllers();
 
-// ✅ JWT Authentication setup
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:3000") // Allow requests from frontend
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()); // Allow credentials (if needed)
+});
+
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 builder.Services.AddAuthentication(options =>
@@ -39,11 +47,11 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!))
+            Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!)
+        )
     };
 });
 
-// ✅ Swagger service registration with JWT Bearer authorization
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -54,7 +62,6 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API documentation for Library Management system"
     });
 
-    // ✅ Add JWT Authentication to Swagger
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -62,7 +69,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' followed by a space and your JWT token.\n\nExample: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Description = "Enter 'Bearer' followed by a space and your JWT token."
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -76,29 +83,29 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
 
 var app = builder.Build();
 
-// ✅ Enable Swagger middleware
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Management API V1");
-        options.RoutePrefix = string.Empty; // Loads Swagger UI at root URL
-    });
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Management API V1");
+    options.RoutePrefix = "swagger";
+});
 
-app.UseHttpsRedirection();
+// Use CORS policy
+app.UseCors("AllowFrontend");
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+Console.WriteLine("✅ Controllers mapped successfully");
 
 app.Run();

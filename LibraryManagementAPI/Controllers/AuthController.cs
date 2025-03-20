@@ -30,6 +30,11 @@ namespace LibraryManagementAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (await _context.Users.AnyAsync(u => u.Username == request.Username))
                 return BadRequest("Username already exists!");
 
@@ -53,7 +58,7 @@ namespace LibraryManagementAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
                 return BadRequest("User not found");
 
@@ -68,15 +73,17 @@ namespace LibraryManagementAPI.Controllers
             return Ok(new { token });
         }
 
+
         private string CreateToken(User user)
         {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.Email),  // ✅ FIXED: Use ClaimTypes.Name for email
+        new Claim(ClaimTypes.Role, user.Role)
+    };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
@@ -89,6 +96,7 @@ namespace LibraryManagementAPI.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -105,3 +113,5 @@ namespace LibraryManagementAPI.Controllers
         }
     }
 }
+
+
