@@ -78,7 +78,7 @@ namespace LibraryManagementAPI.Controllers
         {
             var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.Name, user.Email),  // ✅ FIXED: Use ClaimTypes.Name for email
+        new Claim(ClaimTypes.Name, user.Email),  //  FIXED: Use ClaimTypes.Name for email
         new Claim(ClaimTypes.Role, user.Role)
     };
 
