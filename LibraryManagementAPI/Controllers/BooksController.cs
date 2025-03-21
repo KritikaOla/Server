@@ -16,7 +16,7 @@ namespace LibraryManagementAPI.Controllers
             _bookService = bookService;
         }
 
-        // ✅ PUBLIC: Anyone can view books
+        // PUBLIC: Anyone can view books
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<List<Book>>> Get()
@@ -25,7 +25,7 @@ namespace LibraryManagementAPI.Controllers
             return Ok(books);
         }
 
-        // ✅ PUBLIC: Anyone can view a single book by ID
+        // PUBLIC: Anyone can view a single book by ID
         [HttpGet("{id:int}")]
         [AllowAnonymous]
         public async Task<ActionResult<Book>> Get(int id)
@@ -38,7 +38,7 @@ namespace LibraryManagementAPI.Controllers
             return Ok(book);
         }
 
-        // ✅ PROTECTED: Only Admin can add books
+        //  PROTECTED: Only Admin can add books
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Book>> Post([FromBody] Book newBook)
@@ -51,7 +51,7 @@ namespace LibraryManagementAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = newBook.Id }, newBook);
         }
 
-        // ✅ PROTECTED: Only Admin can update books
+        //  PROTECTED: Only Admin can update books
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] Book updatedBook)
@@ -71,7 +71,7 @@ namespace LibraryManagementAPI.Controllers
             return NoContent();
         }
 
-        // ✅ PROTECTED: Only Admin can delete books
+        //  PROTECTED: Only Admin can delete books
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
