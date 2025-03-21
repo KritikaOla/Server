@@ -24,7 +24,7 @@ namespace LibraryManagementAPI.Controllers
             Console.WriteLine("✅ PurchaseController initialized.");
         }
 
-        // 📌 GET: api/Purchase/user-orders (Get orders for the logged-in user)
+        //  GET: api/Purchase/user-orders (Get orders for the logged-in user)
         [HttpGet("user-orders")]
         public async Task<IActionResult> GetUserOrders()
         {
@@ -66,7 +66,7 @@ namespace LibraryManagementAPI.Controllers
 
             try
             {
-                _context.Purchases.AddRange(purchases); // ✅ Save multiple purchases
+                _context.Purchases.AddRange(purchases); //  Save multiple purchases
                 await _context.SaveChangesAsync();
                 Console.WriteLine($"✅ {purchases.Count} purchases saved successfully!");
                 return Ok(new { message = "✅ Purchase successful!" });
