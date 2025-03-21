@@ -16,18 +16,18 @@ namespace LibraryManagementAPI.Controllers
 		public ContactController(LibraryDbContext context)
 		{
 			_context = context;
-			Console.WriteLine("✅ ContactController instantiated");
+			Console.WriteLine("ContactController instantiated");
 		}
 
 		// Basic ping endpoint to test routing
 		[HttpGet("ping")]
 		public IActionResult Ping()
 		{
-			Console.WriteLine("✅ Ping endpoint hit");
+			Console.WriteLine(" Ping endpoint hit");
 			return Ok("Ping successful");
 		}
 
-		//  Your POST endpoint
+		//  POST endpoint
 		[HttpPost]
 		public async Task<IActionResult> PostContact([FromBody] Contact contact)
 		{
