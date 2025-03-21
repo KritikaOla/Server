@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementAPI.Models
 {
-    [Index(nameof(Email), IsUnique = true)] // 🔹 Ensures Email is UNIQUE
+    [Index(nameof(Email), IsUnique = true)] // Ensures Email is UNIQUE
     public class User
     {
         public int Id { get; set; }
@@ -23,6 +23,6 @@ namespace LibraryManagementAPI.Models
         public string PasswordSalt { get; set; } = string.Empty;
 
         [Required]
-        public string Role { get; set; } = "User"; // ✅ Default role is "User"
+        public string Role { get; set; } = "User"; //  Default role is "User"
     }
 }
