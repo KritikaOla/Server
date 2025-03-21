@@ -12,6 +12,6 @@ public class UserDto
     [Required]
     public string Password { get; set; } = string.Empty;
 
-    // ✅ Add Role to support Admin/User registration
+    // Add Role to support Admin/User registration
     public string Role { get; set; } = "User";  // Default role is "User"
 }
