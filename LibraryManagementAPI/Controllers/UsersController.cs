@@ -24,7 +24,7 @@ namespace LibraryManagementAPI.Controllers
             _configuration = configuration;
         }
 
-        // ✅ PUBLIC: Register endpoint
+        //  PUBLIC: Register endpoint
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto userDto)
@@ -49,7 +49,7 @@ namespace LibraryManagementAPI.Controllers
             return Ok("User registered successfully!");
         }
 
-        // ✅ PUBLIC: Login endpoint
+        //  PUBLIC: Login endpoint
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
@@ -69,7 +69,7 @@ namespace LibraryManagementAPI.Controllers
             return Ok(new { Token = token });
         }
 
-        // ✅ PROTECTED: Get current user info
+        // PROTECTED: Get current user info
         [HttpGet("me")]
         [Authorize]
         public IActionResult GetCurrentUser()
@@ -86,7 +86,7 @@ namespace LibraryManagementAPI.Controllers
             });
         }
 
-        // ✅ PROTECTED ADMIN ONLY: Get all users
+        //  PROTECTED ADMIN ONLY: Get all users
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUsers()
