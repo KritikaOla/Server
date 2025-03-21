@@ -23,6 +23,5 @@ namespace LibraryManagementAPI.Models
         [Required]
         public int Quantity { get; set; }
 
-        // You can add more properties here
     }
 }
