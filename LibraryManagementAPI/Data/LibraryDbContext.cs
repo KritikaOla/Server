@@ -18,17 +18,17 @@ namespace LibraryManagementAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // ✅ Ensure 'Users' table has a unique email
+            //  Ensure 'Users' table has a unique email
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            // ✅ Set default value for Role
+            //  Set default value for Role
             modelBuilder.Entity<User>()
                 .Property(u => u.Role)
                 .HasDefaultValue("User");
 
-            // ✅ Ensure proper table names
+            //  Ensure proper table names
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Book>().ToTable("Books");
             modelBuilder.Entity<Contact>().ToTable("Contacts");
