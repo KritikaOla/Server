@@ -12,14 +12,14 @@ namespace LibraryManagementAPI.Controllers
 	{
 		private readonly LibraryDbContext _context;
 
-		// ✅ Constructor with debug log
+		//  Constructor with debug log
 		public ContactController(LibraryDbContext context)
 		{
 			_context = context;
 			Console.WriteLine("✅ ContactController instantiated");
 		}
 
-		// ✅ Basic ping endpoint to test routing
+		// Basic ping endpoint to test routing
 		[HttpGet("ping")]
 		public IActionResult Ping()
 		{
@@ -27,7 +27,7 @@ namespace LibraryManagementAPI.Controllers
 			return Ok("Ping successful");
 		}
 
-		// ✅ Your POST endpoint
+		//  Your POST endpoint
 		[HttpPost]
 		public async Task<IActionResult> PostContact([FromBody] Contact contact)
 		{
