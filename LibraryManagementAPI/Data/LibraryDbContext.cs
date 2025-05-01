@@ -12,7 +12,7 @@ namespace LibraryManagementAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Purchase> Purchases { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
